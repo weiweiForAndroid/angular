@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<!--  引入js文件-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8" content="text/html">
+    <script type="text/javascript" src="angular.min.js"></script>
+    <script type="text/javascript" src="myApp2.js"></script>
+</head>
+<body>
+<div ng-app="myApp1" >
+    <div id="div1" ng-controller="myController1"> {{name}}</div>
+    <div id="div2" ng-controller="myController2"> {{name}}</div>
+    <div id="div3" ng-controller="myController3"> {{name}}</div>
+
+</div>
+<script type="text/javascript">
+    //动态引入
+    var app1 = angular.module("myApp1", ['myApp2'])
+    app1.controller('myController1', ['$scope', function ($scope) {
+        $scope.name = "真三国"
+    }])
+</script>
+</body>
+</html>

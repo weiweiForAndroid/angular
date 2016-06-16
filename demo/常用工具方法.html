@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" content="text/html">
+    <script type="text/javascript" src="angular.min.js"></script>
+</head>
+<body>
+<div ng-app="myApp">
+    <div ng-controller="myController">
+       {{isArray}}
+       {{json}}
+        {{ccc.name}}
+    </div>
+
+</div>
+<script type="text/javascript">
+    var app = angular.module("myApp", []);
+    app.controller("myController", ['$scope', function ($scope) {
+
+        $scope.name = "张三";
+        $scope.arr = [1,2,3,34,4,44,3];
+        $scope.isArray = angular.isArray($scope.name);
+        //toJson
+        var json = {name:"张三",age:"20"}
+        $scope.json = angular.toJson(json,true)
+        console.log($scope.json)
+//继承
+        var a = {name:"张三"}
+        var  b= {age:10}
+        var c = angular.extend(b,a)
+        console.log(c.name+"//"+c.age)
+        $scope.ccc = c;
+//复制
+        $scope.src = {name:"张胜"}
+        $scope.target = {age:30}
+        var newA = angular.copy($scope.src,$scope.target)
+        console.log(newA.name)
+//循环
+        var jsonO= {name:"张三",性别:"女",年龄:"20"}
+        var results = [];
+        angular.forEach(jsonO,function (value, key) {
+            console.log(key)
+            console.log(value)
+            this.push(key+'---'+value)
+
+
+        },results);
+        console.log(results)
+
+        //bind  绑定对象作为函数的上下文
+        var zhagnsan = {name:"张三"}
+
+        var fu = angular.bind(zhagnsan,function (age) {
+            var str = this.name+age;
+            console.log(str)
+        },10)
+        fu();
+
+    }])
+
+</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" content="text/html">
+    <script type="text/javascript" src="angular.min.js"></script>
+</head>
+<body>
+<div ng-app="myApp">
+    <p>在输入框中尝试输入：</p>
+    <p>姓名：<input type="text" ng-model="name"></p>
+    {{name}}
+    <div ng-init="person={fistName:'xu',lastName:'weiwei'}"></div>
+    <div ng-bind="person.fistName"></div>
+
+    <div ng-controller="myController" ng-click="show();">
+        <div ng-bind="firstName+lastName+'   数据：'+data"></div>
+
+    </div>
+    <div ng-controller="myController1">
+        <div ng-bind="person[0].name+'    '+ person[1].name"></div>
+        <ul>
+            <li ng-repeat="p in person">
+                {{p.name+','+p.age}}
+            </li>
+        </ul>
+        <p>排序循环</p>
+
+        <ul>
+            <li ng-repeat="p in person | orderBy:' age'">
+                {{p.name+','+p.age}}
+            </li>
+        </ul>
+        <p> 输入过滤</p>
+        <div><input type="text" ng-model="Name"></div>
+        <ul>
+            <li ng-repeat="p in person |filter:Name |orderBy:'age'">
+                {{p.name+','+p.age}}
+            </li>
+        </ul>
+    </div>
+    <script type="text/javascript">
+        var app = angular.module("myApp", []);
+        app.controller('myController', ['$scope','$http',function ($scope, $http) {
+            $scope.firstName = "张三";
+            $scope.lastName = "李四";
+            //2秒后修改模块的值
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    $scope.firstName= "许";
+                    $scope.lastName= "微微";
+                })
+            } ,2000)
+            $scope.show = function () {
+                alert("点击了show")
+            }
+            //由于是本地Tomcat服务器，端口不一样，所以存在跨域问题。
+//            $http.get('localhost:8080/MyWeb/servlet/MyServlet').success(function (data, status, headers, config) {
+//                console.log(data)
+//                console.log(status)
+//                console.log(headers)
+//                console.log(config)
+//            }).error(function (err, status, headers, config) {
+//                console.log("log")
+//                $scope.status = status;
+//                console.log(err)
+//                console.log(status)
+//                console.log(headers)
+//                console.log(config)
+//            })
+//          jsonp访问url需要手动追加function=JSON_CALLBACK，其中function可任意命名
+            $http.jsonp('http://172.168.151.201:8080/MyWeb/servlet/MyServlet?callbackFunction=JSON_CALLBACK').success(function (data) {
+                $scope.data = data.toString();
+                console.log(data)
+            }).error(function (err, headers, status) {
+                console.log(err)
+                console.log(headers)
+                console.log(status)
+            })
+
+        }])
+        app.controller('myController1',['$scope', function ($s) {
+            $s.person = [
+                {name: 'weiwei', age: "28"},
+                {name: 'yifeng', age: "30"},
+                {name: 'xiamu', age: "2"}
+            ]
+        }])
+        //初始化全局变量,只对全局变量起作用
+        app.run(['$rootScope',function ($rootScope) {
+            $rootScope.sex="男";
+        }])
+    </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!--  引入js文件-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8" content="text/html">
+    <script type="text/javascript" src="angular.min.js"></script>
+    <script type="text/javascript" src="myApp2.js"></script>
+</head>
+<body>
+<div >
+    <div id="div1" ng-controller="myController1"> {{name}}</div>
+    <div id="div2" ng-controller="myController2"> {{name}}</div>
+    <div id="div3" ng-controller="myController3"> {{name}}</div>
+
+</div>
+<script type="text/javascript">
+    //动态引入
+    var app1 = angular.module("myApp1", [])
+    app1.controller('myController1', ['$scope', function ($scope) {
+        $scope.name = "真三国"
+    }])
+
+    var element1 = document.getElementById('div1')
+    var element2 = document.getElementById('div2')
+    var element3 = document.getElementById('div3')
+    document.onclick = function () {
+        angular.bootstrap(element1,['myApp1'])
+        angular.bootstrap(element2,['myApp2'])
+        angular.bootstrap(element3,['myApp3'])
+    }
+
+    //静态引入
+</script>
+</body>
+</html>

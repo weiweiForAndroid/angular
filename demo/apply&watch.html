@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" content="text/html">
+    <script type="text/javascript" src="angular.min.js"></script>
+</head>
+<body>
+<div ng-app="myApp">
+    <div ng-controller="myController">
+        <p>请输入购买单价<input type="text" ng-model="iphone.money"></p>
+        <p>请输入购买个数<input type="text" ng-model="iphone.num"></p>
+        <p>费用：<span>{{sum() |currency : '￥'}}</span></p>
+        <p>运费：<span>{{iphone.free |currency : '￥'}}</span></p>
+        <p>订单总额：<span>{{iphone.free+sum()|currency : '￥'}}</span></p>
+
+    </div>
+
+</div>
+<script type="text/javascript">
+    var app = angular.module("myApp", []);
+    app.controller("myController", ['$scope', function ($scope) {
+        $scope.iphone = {
+            money: 200,
+            num: 1,
+            free: 10
+        };
+        /**
+         *费用总和
+         */
+        $scope.sum = function () {
+            return $scope.iphone.money * $scope.iphone.num;
+        };
+        //当费用大于100是将运费调整为0元
+        $scope.$watch($scope.sum, function (newValue, oldValue) {
+            $scope.iphone.free = newValue >= 100 ? 0 : 10;
+        })
+    }])
+
+</script>
+</body>
+</html>
