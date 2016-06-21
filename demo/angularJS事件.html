@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="angular.min.js"></script>
+</head>
+<body>
+<div ng-app="App">
+    <div ng-controller="myController">
+        <div ng-click="run()">点击</div><!--点击事件-->
+        <input type="checkbox" ng-model="sel">
+        <select>
+            <option>111</option>
+            <option ng-selected="sel">2222</option>
+        </select>
+
+        <input type="checkbox" ng-change="change()" ng-model="isSelected">
+
+        <input type="text" ng-cut="aaa = '剪切'">{{aaa}}
+        <input type="text" ng-copy="bbb = '复制'">{{bbb}}
+        <input type="text" ng-paste=" ccc= '粘贴'">{{ccc}}
+        <div ng-cloak>{{test}}</div>
+        <div ng-non-bindable>{{test}}</div><!--不被agular解析-->
+
+        <div>
+
+            <input type="button" ng-value="text" ng-disabled="isDisable">
+            <input type="text" ng-value="text" ng-readonly="isDisable">
+            <input type="checkbox" ng-value="text" ng-checked="isDisable">
+
+
+        </div>
+    </div>
+</div>
+
+<div onclick="alert('alert')">hhh方法点击</div>
+
+
+<script type="text/javascript">
+    var app = angular.module("App", []);
+    app.controller("myController", ["$scope", "$interval", function ($scope, $interval) {
+        $scope.run = function () {
+            alert("ng-click")
+        }
+        $scope.change = function () {
+            if ($scope.isSelected == true) {
+                alert("选中")
+            } else {
+                alert("未选中")
+            }
+        }
+
+        $scope.test = "防闪烁文本";
+
+
+        $scope.num = 5;
+        $scope.isDisable = true;
+        $scope.text = $scope.num + '秒';
+
+        var time = $interval(function () {
+            $scope.num--;
+            $scope.text = $scope.num + '秒';
+            if ($scope.num == 0) {
+                $interval.cancel(time);
+                $scope.isDisable = false;
+            }
+        }, 1000);
+
+    }])
+</script>
+</body>
+</html>
