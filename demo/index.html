@@ -53,29 +53,28 @@
             $scope.show = function () {
                 alert("点击了show")
             }
-            //由于是本地Tomcat服务器，端口不一样，所以存在跨域问题。
-//            $http.get('localhost:8080/MyWeb/servlet/MyServlet').success(function (data, status, headers, config) {
-//                console.log(data)
-//                console.log(status)
-//                console.log(headers)
-//                console.log(config)
-//            }).error(function (err, status, headers, config) {
-//                console.log("log")
-//                $scope.status = status;
-//                console.log(err)
-//                console.log(status)
-//                console.log(headers)
-//                console.log(config)
-//            })
-//          jsonp访问url需要手动追加function=JSON_CALLBACK，其中function可任意命名
-            $http.jsonp('http://172.168.151.201:8080/MyWeb/servlet/MyServlet?callbackFunction=JSON_CALLBACK').success(function (data) {
-                $scope.data = data.toString();
+            $http.get('http://172.168.151.201:8080/MyWeb/servlet/MyServlet').success(function (data, status, headers, config) {
                 console.log(data)
-            }).error(function (err, headers, status) {
-                console.log(err)
-                console.log(headers)
                 console.log(status)
+                console.log(headers)
+                console.log(config)
+            }).error(function (err, status, headers, config) {
+                console.log("log")
+                $scope.status = status;
+                console.log(err)
+                console.log(status)
+                console.log(headers)
+                console.log(config)
             })
+//          jsonp访问url需要手动追加function=JSON_CALLBACK，其中function可任意命名
+//            $http.jsonp('http://172.168.151.201:8080/MyWeb/servlet/MyServlet?callbackFunction=JSON_CALLBACK').success(function (data) {
+//                $scope.data = data.toString();
+//                console.log(data)
+//            }).error(function (err, headers, status) {
+//                console.log(err)
+//                console.log(headers)
+//                console.log(status)
+//            })
 
         }])
         app.controller('myController1',['$scope', function ($s) {

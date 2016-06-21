@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="angular.min.js"></script>
+
+    <style>
+        .red{background:red;color:green;}
+        .yellow{background:yellow;}
+    </style>
+</head>
+<body>
+<div ng-app="App" ng-controller="myController">
+    <div ng-cloak ng-class="{red:b,yellow:b}"> {{text}}</div>
+    <div ng-cloak > {{text}}</div>
+    <div ng-cloak ng-style="{{style}}"> {{text}}</div>
+    <a href="{{url}}">百度</a>
+    <br>
+    <a ng-href="{{url}}">百度</a>
+
+    <img ng-src="{{img}}">
+
+
+    </div>
+    <script type="text/javascript">
+        var app = angular.module("App", []);
+        app.controller("myController", ["$scope", function ($scope) {
+            $scope.text = "测试文本";
+            $scope.b = true;
+            $scope.style = {color:'red'};
+            $scope.url = 'http://www.baidu.com';
+            $scope.img = 'http://www.baidu.com/img/bdlogo.png';
+        }])
+    </script>
+</body>
+</html>
