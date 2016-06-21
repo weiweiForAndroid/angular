@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="angular.min.js"></script>
+    <title>jquery引入</title>
+</head>
+<body>
+<div ng-app="myApp">
+    <div ng-controller="myController">
+        {{name}}
+        <div id="obj">
+        </div>
+    </div>
+
+
+</div>
+<script type="text/javascript">
+
+    var app = angular.module("myApp",[]);
+    app.controller("myController", ['$scope', function ($scope) {
+        $scope.name ="angular代码";
+//        $("#obj").html('<span>jquery代码</span>')
+        var el = document.getElementById('obj');
+        angular.element(el).html('这是angularJs的 jquerylite');
+    }])
+
+
+</script>
+
+</body>
+</html>
