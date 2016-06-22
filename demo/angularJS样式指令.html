@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>angularJS样式指令</title>
     <script type="text/javascript" src="angular.min.js"></script>
+    <script type="text/javascript"
+            src="http://cdn.bootcss.com/angular.js/1.4.0-beta.6/angular-sanitize.min.js"></script>
 
     <style>
         .red {
@@ -17,18 +19,19 @@
     </style>
 </head>
 <body>
-<div ng-app="App" ng-controller="myController">
-    <div ng-cloak ng-class="{red:b,yellow:b}"> {{text}}</div>
-    <div ng-cloak> {{text}}</div>
-    <div ng-cloak ng-style="{{style}}"> {{text}}</div>
-    <a href="{{url}}" title="百度 ">百度</a>
-    <br>
-    <a ng-href="{{url}}" ng-attr-title="{{title}}">百度</a><!-- 使用ng-attr-title 标题需要控制器变量植入-->
-    <div align="center">
-        <img ng-src="{{img}}" title="百度logo">
-    </div>
-    <br>
-    <div align="center" ng-show="b">布尔值决定是否显示</div>
+<div ng-app="App">
+    <div ng-controller="myController">
+        <div ng-cloak ng-class="{red:b,yellow:b}"> {{text}}</div>
+        <div ng-cloak> {{text}}</div>
+        <div ng-cloak ng-style="{{style}}"> {{text}}</div>
+        <a href="{{url}}" title="百度 ">百度</a>
+        <br>
+        <a ng-href="{{url}}" ng-attr-title="{{title}}">百度</a><!-- 使用ng-attr-title 标题需要控制器变量植入-->
+        <div align="center">
+            <img ng-src="{{img}}" title="百度logo">
+        </div>
+        <br>
+        <div align="center" ng-show="b">布尔值决定是否显示</div>
     <div align="center" ng-if="b">布尔值dom操作，决定是否存在该行代码</div>
     <div ng-switch on="selection">
         <p ng-switch-default>默认显示</p>
@@ -38,17 +41,36 @@
     </div>
 
 
-    <input type="checkbox" ng-model="open">
-    <details ng-open="open">
-        <summary>简介</summary>
-        <p>展开内容</p>
-    </details>
+        <input type="checkbox" ng-model="open">
+        <details ng-open="open">
+            <summary>简介</summary>
+            <p>展开内容</p>
+        </details>
+
+
+        <!--ng-bind-template的使用 ，解决了 ng-bind 只能绑定一个的问题。-->
+        <div ng-bind-template="{{text}}   {{title}}"></div>
+        <!--使用ng-bind-html 需要引入sanitize插件。并且在module中依赖 ngSanitize-->
+        <!--<div  >-->
+        <!--<p  ng-bind-html="text3"></p>-->
+        <!--</div>-->
+
+        <div ng-repeat="innerList in list" ng-init="outerIndex = $index">
+            <div ng-repeat="value in innerList" ng-init="innerIndex = $index">
+                <span class="example-init">list[ {{outerIndex}} ][ {{innerIndex}} ] = {{value}};</span>
+            </div>
+        </div>
+        <!--{updateOn:'blur'} 功能：当鼠标离开时更新model-->
+        <input type="text" ng-model="name" ng-model-options="{updateOn:'blur'}">
+        <br>
+        {{name}}
+    </div>
 </div>
 
 
 <script type="text/javascript">
-    var app = angular.module("App", []);
-    app.controller("myController", ["$scope", function ($scope) {
+    var app = angular.module("App", ['ngSanitize']);
+    app.controller("myController", ["$scope", "$sce", function ($scope, $sce) {
         $scope.text = "测试文本";
         $scope.b = true;
         $scope.style = {color: 'red'};//对象/array
@@ -56,9 +78,16 @@
         $scope.img = 'http://www.baidu.com/img/bdlogo.png';
         $scope.title = '测试标题';
 
-
+//
         $scope.items = ['setting', 'self', 'other'];//数组
         $scope.selection = $scope.items[0];
+//        $scope.text2 = '<h2>这是h2</h2>';
+//
+//
+//        $scope.text3 = $sce.trustAs( $scope.text2 );
+
+        $scope.list = [['a', 'b'], ['c', 'd']];
+
     }])
 </script>
 </body>
