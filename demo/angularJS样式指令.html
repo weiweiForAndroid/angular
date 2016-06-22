@@ -2,36 +2,64 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>angularJS样式指令</title>
     <script type="text/javascript" src="angular.min.js"></script>
 
     <style>
-        .red{background:red;color:green;}
-        .yellow{background:yellow;}
+        .red {
+            background: red;
+            color: green;
+        }
+
+        .yellow {
+            background: yellow;
+        }
     </style>
 </head>
 <body>
 <div ng-app="App" ng-controller="myController">
     <div ng-cloak ng-class="{red:b,yellow:b}"> {{text}}</div>
-    <div ng-cloak > {{text}}</div>
+    <div ng-cloak> {{text}}</div>
     <div ng-cloak ng-style="{{style}}"> {{text}}</div>
-    <a href="{{url}}">百度</a>
+    <a href="{{url}}" title="百度 ">百度</a>
     <br>
-    <a ng-href="{{url}}">百度</a>
-
-    <img ng-src="{{img}}">
-
-
+    <a ng-href="{{url}}" ng-attr-title="{{title}}">百度</a><!-- 使用ng-attr-title 标题需要控制器变量植入-->
+    <div align="center">
+        <img ng-src="{{img}}" title="百度logo">
     </div>
-    <script type="text/javascript">
-        var app = angular.module("App", []);
-        app.controller("myController", ["$scope", function ($scope) {
-            $scope.text = "测试文本";
-            $scope.b = true;
-            $scope.style = {color:'red'};
-            $scope.url = 'http://www.baidu.com';
-            $scope.img = 'http://www.baidu.com/img/bdlogo.png';
-        }])
-    </script>
+    <br>
+    <div align="center" ng-show="b">布尔值决定是否显示</div>
+    <div align="center" ng-if="b">布尔值dom操作，决定是否存在该行代码</div>
+    <div ng-switch on="selection">
+        <p ng-switch-default>默认显示</p>
+        <p ng-switch-when="setting"> setting</p>
+        <p ng-switch-when="self"> self</p>
+        <p ng-switch-when="other"> other</p>
+    </div>
+
+
+    <input type="checkbox" ng-model="open">
+    <details ng-open="open">
+        <summary>简介</summary>
+        <p>展开内容</p>
+    </details>
+</div>
+
+
+<script type="text/javascript">
+    var app = angular.module("App", []);
+    app.controller("myController", ["$scope", function ($scope) {
+        $scope.text = "测试文本";
+        $scope.b = true;
+        $scope.style = {color: 'red'};//对象/array
+        $scope.url = 'http://www.baidu.com';
+        $scope.img = 'http://www.baidu.com/img/bdlogo.png';
+        $scope.title = '测试标题';
+
+
+        $scope.items = ['setting', 'self', 'other'];//数组
+        $scope.selection = $scope.items[0];
+    }])
+</script>
 </body>
 </html>
