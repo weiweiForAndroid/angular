@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ng-includ 指令</title>
+    <script type="text/javascript " src ="angular.min.js"></script>
+</head>
+<body ng-app="App">
+
+<div ng-controller="myController">
+
+    <div ng-include="url"></div>
+</div>
+
+
+<script type="text/javascript">
+    var app = angular.module('App', []);
+    app.controller("myController", ['$scope', function ($scope) {
+        $scope.url = 'include_html.html';
+    }])
+
+</script>
+
+</body>
+</html>
