@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义过滤器以及自定义js文件的引入</title>
+    <script type="text/javascript" src="angular.min.js"></script>
+    <script type="text/javascript" src="filter.js"></script>
+</head>
+<body ng-app="App" ng-controller="myController">
+{{str | myFilter}}
+<br>
+{{str |rJS:'JS':'JAVA_SCRIPT'}}
+
+</body>
+
+<script type="text/javascript">
+    var app = angular.module('App', ['myApp.filter']);
+    app.filter('myFilter', function () {
+        return function (input) {
+            console.log("myFilter")
+            return input.replace(/hello/, "你好");
+        }
+    })
+    app.controller("myController", ['$scope', function ($scope) {
+        $scope.str = "hello angularJS";
+    }]);
+
+</script>
+</html>
