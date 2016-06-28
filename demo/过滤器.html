@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>过滤器和自定义过滤器</title>
+    <script type="text/javascript" src="angular.min.js"></script>
+</head>
+<body ng-app="App" ng-controller="myController">
+<!--{{json |json}}-->
+<br>
+{{2323233 |currency:"RMB"}}
+
+<br>
+<p>请输入筛选关键字</p>
+
+<input type="text" ng-model="name">
+<p>全字段筛选</p>
+<ul>
+
+    <!--稍微复杂点的过滤器   filter: name 这样是对数组中对象所有字段进行筛选的-->
+    <li ng-repeat="x in names |filter: name |orderBy:'age'">
+        {{x.name+' -- '+x.age}}
+    </li>
+</ul>
+
+<p>name字段筛选</p>
+
+<ul>
+
+    <!--稍微复杂点的过滤器   filter: {'name':name} 这样是对数组中对象name字段进行筛选进行筛选的-->
+    <li ng-repeat="x in names |filter: {'name':name} |orderBy:'age'">
+        {{x.name+' -- '+x.age}}
+    </li>
+</ul>
+
+
+<br>
+
+<!--数据外进行过滤 filter-->
+{{
+[{name:"weiwei",age:27,xing:"xu"},
+{name:"yifeng",age:29,xing:"zhang"},
+{name:"xiamu",age:2,xing:"xu"}
+]
+|filter:{'xing':'xu'}
+}}
+
+<br>
+<!--limitTo可用于截取字符串-->
+{{"1234567890" |limitTo:4}}  <!-- 当值为正数时从0开始截取-->
+<br>
+{{"1234567890" |limitTo:-4}}  <!--当值为负数时从length开始截取-->
+
+
+<br>
+<!--当orderBy:'id':true 时倒序   默认false正序排列-->
+{{
+[{name:"weiwei",age:27,xing:"xu"},
+{name:"yifeng",age:29,xing:"zhang"},
+{name:"xiamu",age:2,xing:"xu"}
+]
+|orderBy:'age':true
+}}
+
+<p>控制器中使用filter</p>
+{{Uname}}
+<br>
+{{cPrice}}
+</body>
+
+<script type="text/javascript">
+
+    var app = angular.module("App", []);
+    app.controller("myController", ["$scope","$filter", function ($scope,$filter) {
+        $scope.json = {foo: "foo", name: "weiwei", age: "23"};
+        $scope.names = [{name: "weiwei", age: 27}, {name: "yifeng", age: 29}, {name: "xiamu", age: 2}];
+
+
+        //控制器中使用过滤器
+        $scope.fisrtName="weiwei";
+        $scope.Uname = $filter('uppercase')($scope.fisrtName);
+
+        $scope.price = 121221221;
+        $scope.cPrice = $filter('currency')($scope.price,'RMB ')
+
+    }])
+
+</script>
+</html>
